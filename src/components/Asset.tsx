@@ -1,0 +1,34 @@
+import React, { useEffect, useState } from "react"
+import constants from "./constants"
+
+const Asset = (props: any) => {
+    const [priceInfo, setPriceInfo] = useState<{[key: string]: string}>({})
+    const [callCount, setCallCount] = useState<number>(0)
+    const [assetRegistered, setAssetRegistered] = useState<boolean>(false)
+
+    const {assetKey} = props
+    
+    useEffect ( () => {
+        const url = "http://localhost:5000/latestPrice/BINANCE/" + assetKey
+        console.log("try ", url)
+        fetch(url).then(res => res.json()).then(j => { console.log(j); setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
+
+        const timerId = setInterval(() => {
+            setCallCount(callCount + 1)
+          }, 5000);
+
+        return function cleanup() {
+            clearInterval(timerId);
+        };
+    }, [callCount])
+
+    return (
+        <>
+        <h4>{assetKey}</h4>
+        <h4>Bid:{priceInfo["bidSize"]} @ {priceInfo["bestBid"]}</h4>
+        <h4>Ask:{priceInfo["offerSize"]} @ {priceInfo["bestOffer"]}</h4>
+        </>
+    )
+}
+
+export default Asset
