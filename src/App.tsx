@@ -1,23 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import AssetList from './components/AssetList';
 import SynthAssetList from './components/SynthAssetList';
 import constants from './components/constants';
 import FollowAsset from './components/FollowAsset';
+import CreateSynthAsset from './components/CreateSynthAsset';
+
+export const allAssetContext = createContext<exAsset[]>([])
+
+interface ex {
+  id: number,
+  name: string
+}
+
+interface exAsset {
+  id: number,
+  symbol: string,
+  descr: string,
+  exchange: ex
+}
 
 function App() {
-  const [exchAssets, setExchAssets] = useState<{id: number; exchange_id: number; symbol: string; descr: string; exchange:{name: string}}[]>([])
+  const [followedAssets, setFollowedAssets] = useState<{id: number; exchange_id: number; symbol: string; descr: string; exchange:{name: string}}[]>([])
+  const [allAssets, setAllAssets] = useState<exAsset[]>([])
 
   useEffect( () => {
 
-    const dbUrl = constants.dbUrl + "followedAssets/1"
+    const dbUrl = constants.dbUrl + "followedAssets/" + constants.userId
     fetch(dbUrl).then(res=>res.json()).then(assets=>
     {
-      console.log("Assets in App: ", assets)
-      setExchAssets(assets)
-      exchAssets.forEach(a => {
-          console.log(a)
+      setFollowedAssets(assets)
+      followedAssets.forEach(a => {
           const url = `${constants.mdUrl}addAsset/${a.exchange.name}/${a.descr}`
           fetch(url,
             {
@@ -26,14 +40,23 @@ function App() {
         })
     })
 
-    console.log(exchAssets)
+    const allAssetsUrl = constants.dbUrl + "allExchAssets"
+    fetch(allAssetsUrl).then(res=>res.json()).then(
+      assets=>{
+          setAllAssets(assets)
+      }
+    )
   }, [])
 
   return (
     <div className="App">
-      <AssetList selectedAssets={exchAssets}/>
-      <SynthAssetList></SynthAssetList>
-      <FollowAsset></FollowAsset>
+      <allAssetContext.Provider value={allAssets}>
+        {/* <AssetList selectedAssets={followedAssets}/> */}
+        {/* <SynthAssetList></SynthAssetList> */}
+        {/* Done 12-15 <FollowAsset></FollowAsset> */}
+        <CreateSynthAsset></CreateSynthAsset>
+      </allAssetContext.Provider>
+      
     </div>
   );
 }

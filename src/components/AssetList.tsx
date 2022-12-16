@@ -6,7 +6,7 @@ const AssetList = (props:{selectedAssets:{id: number; exchange_id: number; symbo
     return (
         <>
         <h1>AssetList</h1>
-        {props.selectedAssets.map(a => <Asset assetKey = {a.descr}></Asset>)}
+        {props.selectedAssets.map(a => <Asset assetKey = {a.descr} assetId = {a.id}></Asset>)}
         </>
     )
 }
