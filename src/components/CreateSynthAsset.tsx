@@ -7,10 +7,10 @@ interface leg {
     weight: number
 }
 
-interface savedLeg {
-    exch_asset_id : number,
-    weight: number
-}
+// interface savedLeg {
+//     exch_asset_id : number,
+//     weight: number
+// }
 
 const newLeg = {
     assetId: -1,
