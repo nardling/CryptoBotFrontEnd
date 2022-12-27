@@ -1,11 +1,19 @@
 import React, { useState, useEffect, ButtonHTMLAttributes } from "react"
 import constants from "./constants"
 import { allAssetContext } from "../App"
+import { exAsset } from "../App"
 
-const FollowAsset = () => {
+// id: number,
+// symbol: string,
+// descr: string,
+// exchange_name: string
+
+const FollowAsset = (props: any) => {
     const [selectedAsset, setSelectedAsset] = useState<number>(-1)
     
-    const submitFollow = (e: React.MouseEvent) => {
+    const {addFollowCallback} = props
+
+    const submitFollow = (assets: exAsset[], e: React.MouseEvent) => {
         const url: string = constants.dbUrl + "addFollowedAsset"
         e.preventDefault()
         const payload: {} = {
@@ -20,8 +28,8 @@ const FollowAsset = () => {
             },
             body: JSON.stringify(payload)
         })
-        console.log(e)
-        console.log("Selected Asset Id ", selectedAsset)
+        const newFollow = assets.filter(a=>{return a.id == selectedAsset})[0]
+        addFollowCallback(newFollow)
     }
 
     const updateSelectedAsset = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -34,9 +42,9 @@ const FollowAsset = () => {
             {value => 
             <form>
                 <select onChange={(e) => {updateSelectedAsset(e)}}>
-                    {value.map(a =><option value={a.id}>{a.exchange.name} : {a.symbol}</option>)}
+                    {value.map(a =><option value={a.id}>{a.exchange_name} : {a.symbol}</option>)}
                 </select>
-                <button onClick={submitFollow}>Follow Asset</button>
+                <button onClick={(e) => {submitFollow(value, e)}}>Follow Asset</button>
             </form> }
         </allAssetContext.Consumer>
     )

@@ -8,7 +8,7 @@ const AllAssetDropdown = (props: any) => {
             {
                 value => <select value={selectedAsset} onChange={(e) => {callback(e, index)}}>
                     {value.map((a, ai) =>
-                        <option value={a.id}>{a.exchange.name} : {a.symbol}</option>)}
+                        <option value={a.id}>{a.exchange_name} : {a.symbol}</option>)}
                 </select>
             }
         </allAssetContext.Consumer>

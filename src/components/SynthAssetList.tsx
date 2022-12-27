@@ -1,6 +1,13 @@
-const SynthAssetList = () => {
+import SynthAsset from "./SynthAsset"
+
+const SynthAssetList = (props:{synthAssets:{
+    id: number,
+    descr: string}[]
+}) => {
     return (
-        <h4>SynthAssetList</h4>
+        <>
+        {props.synthAssets.map(sa => <SynthAsset assetId = {sa.id} assetKey={sa.descr}/>)}
+        </>
     )
 }
 

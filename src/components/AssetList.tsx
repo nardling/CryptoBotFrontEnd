@@ -1,12 +1,10 @@
 import Asset from "./Asset"
 
-const AssetList = (props:{selectedAssets:{id: number; exchange_id: number; symbol: string; descr: string}[]}) => {//selectedAssets: {id: number; exchange_id: number; symbol: string; descr: string}[]) => {
+const AssetList = (props:{selectedAssets:{id: number; exchange_name: string; symbol: string; descr: string}[]}) => {
 
-    console.log("In AssetList ", props.selectedAssets)
     return (
         <>
-        <h1>AssetList</h1>
-        {props.selectedAssets.map(a => <Asset assetKey = {a.descr} assetId = {a.id}></Asset>)}
+        {props.selectedAssets.map(a => <Asset key={a.id} exchName={a.exchange_name} assetKey = {a.descr} assetId = {a.id}></Asset>)}
         </>
     )
 }

@@ -9,13 +9,12 @@ const SynthAsset = (props: any) => {
     const {assetKey, assetId} = props
     
     useEffect ( () => {
-        const url = constants.mdUrl + "latestPrice/" + assetKey
-        console.log("try ", url)
-        fetch(url).then(res => res.json()).then(j => { console.log(j); setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
+        const url = constants.mdUrl + "getLatestSynthPrice/" + constants.userId + "/" + assetKey
+        fetch(url).then(res => res.json()).then(j => {setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
 
         const timerId = setInterval(() => {
             setCallCount(callCount + 1)
-          }, 5000);
+          }, 1000);
 
         return function cleanup() {
             clearInterval(timerId);

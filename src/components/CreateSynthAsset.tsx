@@ -60,7 +60,6 @@ const CreateSynthAsset = () => {
     }
 
     const dropDownChanged = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
-        console.log(e, index)
         let curAssetList=[...assetList]
         curAssetList[index].assetId = parseInt(e.target.value)
         setAssetList(curAssetList)

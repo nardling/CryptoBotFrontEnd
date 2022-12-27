@@ -6,21 +6,20 @@ const Asset = (props: any) => {
     const [callCount, setCallCount] = useState<number>(0)
     const [assetRegistered, setAssetRegistered] = useState<boolean>(false)
 
-    const {assetKey, assetId} = props
+    const {exchName, assetKey, assetId} = props
     
-    useEffect ( () => {
-        const url = constants.mdUrl + "latestPrice/BINANCE/" + assetKey
-        console.log("try ", url)
-        fetch(url).then(res => res.json()).then(j => { console.log(j); setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
+    // useEffect ( () => {
+    //     const url = constants.mdUrl + "latestPrice/" + exchName + "/" + assetKey
+    //     fetch(url).then(res => res.json()).then(j => {setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
 
-        const timerId = setInterval(() => {
-            setCallCount(callCount + 1)
-          }, 5000);
+    //     const timerId = setInterval(() => {
+    //         setCallCount(callCount + 1)
+    //       }, 1000);
 
-        return function cleanup() {
-            clearInterval(timerId);
-        };
-    }, [callCount])
+    //     return function cleanup() {
+    //         clearInterval(timerId);
+    //     };
+    // }, [callCount])
 
     const removeAsset = () => {
         const url: string = constants.dbUrl + "removeFollowedAsset"
@@ -40,7 +39,7 @@ const Asset = (props: any) => {
 
     return (
         <>
-        <h4>{assetKey}</h4>
+        <h4>{exchName}:{assetKey}</h4>
         <h4>Bid:{priceInfo["bidSize"]} @ {priceInfo["bestBid"]}</h4>
         <h4>Ask:{priceInfo["offerSize"]} @ {priceInfo["bestOffer"]}</h4>
         <button onClick={removeAsset}>Remove</button>
