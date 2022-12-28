@@ -2,6 +2,7 @@ import React, { useState, useEffect, ButtonHTMLAttributes } from "react"
 import constants from "./constants"
 import { allAssetContext } from "../App"
 import { exAsset } from "../App"
+import store from "../App"
 
 // id: number,
 // symbol: string,
@@ -45,6 +46,7 @@ const FollowAsset = (props: any) => {
                     {value.map(a =><option value={a.id}>{a.exchange_name} : {a.symbol}</option>)}
                 </select>
                 <button onClick={(e) => {submitFollow(value, e)}}>Follow Asset</button>
+                <button onClick = {(e) => { }}></button>
             </form> }
         </allAssetContext.Consumer>
     )

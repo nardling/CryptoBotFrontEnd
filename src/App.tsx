@@ -8,10 +8,15 @@ import FollowAsset from './components/FollowAsset';
 import CreateSynthAsset from './components/CreateSynthAsset';
 import CreateStrategy from './components/CreateStrategy';
 import { BrowserRouter as Router, Route, Switch, Link  } from 'react-router-dom'
+import { configureStore } from '@reduxjs/toolkit';
+import counterSlice from './slices/counter'
 
 export const allAssetContext = createContext<exAsset[]>([])
 export const synthAssetContext = createContext<synthAsset[]>([])
 
+export const store = configureStore({
+  reducer: counterSlice.reducer
+})
 
 export interface exAsset {
   id: number,
