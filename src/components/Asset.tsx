@@ -6,7 +6,7 @@ const Asset = (props: any) => {
     const [callCount, setCallCount] = useState<number>(0)
     const [assetRegistered, setAssetRegistered] = useState<boolean>(false)
 
-    const {exchName, assetKey, assetId} = props
+    const {exchName, assetKey, assetId, removeCallback} = props
     
     // useEffect ( () => {
     //     const url = constants.mdUrl + "latestPrice/" + exchName + "/" + assetKey
@@ -34,7 +34,7 @@ const Asset = (props: any) => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify(payload)
-        })
+        }).then(removeCallback(assetId))
     }
 
     return (

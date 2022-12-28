@@ -46,10 +46,12 @@ const CreateStrategy = () => {
         <>
         <label>Strategy Name: </label>
         <input type="text" onChange={(e) => {setName(e.target.value)}}/>
+        <br/>
+        <br/>
         <label>Asset: </label>
         <SynthAssetDropdown callback={assetChanged} index={0} selectedAsset={-1}/>
-        <label>Name: </label>
-        <input type="text" onChange={(e)=>{setName(e.target.value)}}/>
+        {/* <label>Name: </label>
+        <input type="text" onChange={(e)=>{setName(e.target.value)}}/> */}
         <label>Target: </label>
         <select onChange={(e) => setTarget(e.target.value)}>
             <option>Bid</option>
@@ -63,12 +65,16 @@ const CreateStrategy = () => {
         </select>
         <label>Value: </label>
         <input type="number" onChange={(e)=>{setValue(parseFloat(e.target.value))}}/>
+        <br/>
+        <br/>
         <label>Max Exposure: </label>
         <input type="number" onChange={(e) => {setMaxExposure(parseFloat(e.target.value))}}/>
         <label>Max Trade: </label>
         <input type="number" onChange={(e) => {setMaxTradeNotional(parseFloat(e.target.value))}}/>
         <label>Time Delay: </label>
         <input type="number" onChange={(e) => {setTimeDelay(parseFloat(e.target.value))}}/>
+        <br/>
+        <br/>
         <button onClick={addStrategy}>Save</button>
         </>
     )

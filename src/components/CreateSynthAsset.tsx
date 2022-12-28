@@ -80,6 +80,7 @@ const CreateSynthAsset = () => {
             <label>SynthAssetName: </label>
             <input type="text" name="synthName" list="exitingSynths" onChange={assetNameChanged}/>
             <br/>
+            <br/>
             <table>
             {
             assetList.map((a, index) =>

@@ -107,6 +107,11 @@ function App() {
       }).then(res=>res.json()).then(r=>{}).catch(e=>console.log(e))
   }
 
+  const followedAssetRemoved = (assetId:number) => {
+    const newAssetList = followedAssets.filter(a => a.id != assetId)
+    setFollowedAssets(newAssetList)
+  }
+
   return (
     <Router>
     <div className="App">
@@ -120,7 +125,7 @@ function App() {
           </div>
           <div className='side-by-side'>
             <div className='bordered'>
-              <AssetList selectedAssets={followedAssets}/>
+              <AssetList selectedAssets={followedAssets} assetRemovedCallback={followedAssetRemoved}/>
               <SynthAssetList synthAssets={synthAssets}/>
             </div>
             <div className='bordered'>
