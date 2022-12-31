@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { iStrategy } from '../App'
 import constants from './constants'
 import StrategyTile from './StrategyTile'
+import { useAppSelector } from '../store/hooks'
 
-const StrategyList = (props: any) => {
-    const {strategies} = props
+const StrategyList = () => {
+    const strategies = useAppSelector(state => state.strategies.value)
 
     console.log("Strategies", strategies)
 

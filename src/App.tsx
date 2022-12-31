@@ -62,9 +62,7 @@ function App() {
   const [followedAssets, setFollowedAssets] = useState<exAsset[]>([])
   const [allAssets, setAllAssets] = useState<exAsset[]>([])
   const [synthAssets, setSynthAssets] = useState<synthAsset[]>([])
-  // const [strategies, setStrategies] = useState<iStrategy[]>([])
 
-  const strategies = useAppSelector(state => state.strategies.value)
   const dispatch = useAppDispatch()
 
   tradesReceiver.onmessage = (msg) => {
@@ -162,7 +160,7 @@ function App() {
               <SynthAssetList synthAssets={synthAssets}/>
             </div>
             <div className='bordered'>
-              <StrategyList strategies={strategies}/>
+              <StrategyList/>
             </div>
             <div className='bordered'>
               <div>
@@ -183,7 +181,7 @@ function App() {
                   <CreateStrategy></CreateStrategy>
                 </Route>
                 <Route path="/showStrategy/:strategyName">
-                  <StrategyDetail strategies={strategies}></StrategyDetail>
+                  <StrategyDetail></StrategyDetail>
                 </Route>
               </Switch>
             </div>
