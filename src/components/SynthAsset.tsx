@@ -8,18 +8,18 @@ const SynthAsset = (props: any) => {
 
     const {assetKey, assetId} = props
     
-    useEffect ( () => {
-        const url = constants.mdUrl + "getLatestSynthPrice/" + constants.userId + "/" + assetKey
-        fetch(url).then(res => res.json()).then(j => {setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
+    // useEffect ( () => {
+    //     const url = constants.mdUrl + "getLatestSynthPrice/" + constants.userId + "/" + assetKey
+    //     fetch(url).then(res => res.json()).then(j => {setPriceInfo(j)}).catch(e=>{console.log("Error in get price: ", e)})
 
-        const timerId = setInterval(() => {
-            setCallCount(callCount + 1)
-          }, 1000);
+    //     const timerId = setInterval(() => {
+    //         setCallCount(callCount + 1)
+    //       }, 1000);
 
-        return function cleanup() {
-            clearInterval(timerId);
-        };
-    }, [callCount])
+    //     return function cleanup() {
+    //         clearInterval(timerId);
+    //     };
+    // }, [callCount])
 
     const removeAsset = () => {
         const url: string = constants.dbUrl + "removeSynthAsset"

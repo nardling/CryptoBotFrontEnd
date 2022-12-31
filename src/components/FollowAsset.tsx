@@ -36,7 +36,7 @@ const FollowAsset = (props: any) => {
     }
 
     const updateSelectedAsset = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(e)
+        console.log(e, Number(e.target.value))
         setSelectedAsset(Number(e.target.value))
     }
 
@@ -44,7 +44,7 @@ const FollowAsset = (props: any) => {
         <allAssetContext.Consumer>
             {value => 
             <form>
-                <AllAssetDropdown callback={updateSelectedAsset} index={0} selectedAsset={-1}></AllAssetDropdown>
+                <AllAssetDropdown callback={updateSelectedAsset} index={0} selectedAsset={selectedAsset}></AllAssetDropdown>
                 <button onClick={(e) => {submitFollow(value, e)}}>Follow Asset</button>
             </form> }
         </allAssetContext.Consumer>

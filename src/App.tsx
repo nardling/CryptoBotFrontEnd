@@ -7,11 +7,16 @@ import constants from './components/constants';
 import FollowAsset from './components/FollowAsset';
 import CreateSynthAsset from './components/CreateSynthAsset';
 import CreateStrategy from './components/CreateStrategy';
+import StrategyDetail from './components/StrategyDetail';
 import { BrowserRouter as Router, Route, Switch, Link  } from 'react-router-dom'
+import Strategy from './components/StrategyTile';
+import StrategyList from './components/StrategyList';
+import { setStrategies } from './store/strategiesStore';
+import { useAppSelector, useAppDispatch } from './store/hooks'
+import { RootState } from './store/store';
 
 export const allAssetContext = createContext<exAsset[]>([])
 export const synthAssetContext = createContext<synthAsset[]>([])
-
 
 export interface exAsset {
   id: number,
@@ -38,10 +43,37 @@ interface synthExchangeAsset {
   id: number
 }
 
+export interface iStrategy {
+  id: number,
+  target: string,
+  condition: string,
+  value: number,
+  action: string,
+  max_exposure: number,
+  max_trade_notional: number,
+  time_delay: number
+  synth_asset_name: string,
+  strategy_name: string
+}
+
+const tradesReceiver = new WebSocket(constants.tradeSock)
+
 function App() {
   const [followedAssets, setFollowedAssets] = useState<exAsset[]>([])
   const [allAssets, setAllAssets] = useState<exAsset[]>([])
   const [synthAssets, setSynthAssets] = useState<synthAsset[]>([])
+  // const [strategies, setStrategies] = useState<iStrategy[]>([])
+
+  const strategies = useAppSelector(state => state.strategies.value)
+  const dispatch = useAppDispatch()
+
+  tradesReceiver.onmessage = (msg) => {
+    console.log(msg)
+    alert(msg)
+  }
+
+  // tradesReceiver.send("TestMessage")
+
   useEffect( () => {
 
     const dbUrl = constants.dbUrl + "followedAssets/" + constants.userId
@@ -94,6 +126,13 @@ function App() {
           setAllAssets(assets)
       }
     )
+
+    const strategiesUrl = constants.dbUrl + "getStrategiesForUser/" + constants.userId
+    fetch(strategiesUrl).then(res=>res.json()).then(
+      strategies => {
+        dispatch(setStrategies(strategies))
+      }
+    )
   }, [])
 
   const newAssetFollowed = (newAsset: exAsset) => {
@@ -117,18 +156,22 @@ function App() {
     <div className="App">
       <allAssetContext.Provider value={allAssets}>
         <synthAssetContext.Provider value = {synthAssets}>
-          <div>
-            <Link to='/followAsset'><button>Add New Follow</button></Link>
-            <Link to='/createSynth'><button>Create Synth Asset</button></Link>
-            <Link to='/createStrategy'><button>Create Strategy</button></Link>
-            {/* <Link to='/'><button>Show Trades</button></Link> */}
-          </div>
           <div className='side-by-side'>
             <div className='bordered'>
               <AssetList selectedAssets={followedAssets} assetRemovedCallback={followedAssetRemoved}/>
               <SynthAssetList synthAssets={synthAssets}/>
             </div>
             <div className='bordered'>
+              <StrategyList strategies={strategies}/>
+            </div>
+            <div className='bordered'>
+              <div>
+                <Link to='/followAsset'><button>Add New Follow</button></Link>
+                <Link to='/createSynth'><button>Create Synth Asset</button></Link>
+                <Link to='/createStrategy'><button>Create Strategy</button></Link>
+                {/* <Link to='/showStrategy'><button>Show Strategy</button></Link> */}
+                {/* <Link to='/'><button>Show Trades</button></Link> */}
+              </div>
               <Switch>
                 <Route path="/followAsset">
                   <FollowAsset addFollowCallback = {newAssetFollowed}></FollowAsset>
@@ -138,6 +181,9 @@ function App() {
                 </Route>
                 <Route path="/createStrategy">
                   <CreateStrategy></CreateStrategy>
+                </Route>
+                <Route path="/showStrategy/:strategyName">
+                  <StrategyDetail strategies={strategies}></StrategyDetail>
                 </Route>
               </Switch>
             </div>
