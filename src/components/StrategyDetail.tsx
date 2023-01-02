@@ -1,4 +1,4 @@
-import { iStrategy } from "../App"
+import { iStrategy } from "../interfaces/interfaces";
 import { useAppSelector } from "../store/hooks"
 
 const StrategyDetail = () => {

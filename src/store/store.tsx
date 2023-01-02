@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import strategiesReducer from './strategiesStore' 
+import strategiesReducer from './strategiesStore'
+import tradesReducer from './tradesStore'
+import propertiesReducer from './propertiesStore'
 
 export const store = configureStore(
     {
         reducer: {
-            strategies: strategiesReducer
+            strategies: strategiesReducer,
+            trades: tradesReducer,
+            properties: propertiesReducer
         }
     }
 )

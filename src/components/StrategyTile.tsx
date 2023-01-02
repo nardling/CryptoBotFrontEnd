@@ -1,4 +1,4 @@
-import { iStrategy } from '../App'
+import { iStrategy } from "../interfaces/interfaces";
 import constants from './constants'
 import { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'

@@ -14,8 +14,15 @@ code {
 
 .side-by-side {
   display: inline-flex;
+  width:90%
 }
 
-.bordered {
+.bordered25 {
   border-style: solid;
+  width: 25%;
+}
+
+.bordered50 {
+  border-style: solid;
+  width: 50%;
 }

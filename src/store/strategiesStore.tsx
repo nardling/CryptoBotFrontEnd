@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { iStrategy } from "../App";
+import { iStrategy } from "../interfaces/interfaces";
 
 export const strategySlice = createSlice(
     {

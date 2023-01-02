@@ -8,10 +8,13 @@ import FollowAsset from './components/FollowAsset';
 import CreateSynthAsset from './components/CreateSynthAsset';
 import CreateStrategy from './components/CreateStrategy';
 import StrategyDetail from './components/StrategyDetail';
+import Trades from './components/Trades';
 import { BrowserRouter as Router, Route, Switch, Link  } from 'react-router-dom'
 import Strategy from './components/StrategyTile';
 import StrategyList from './components/StrategyList';
 import { setStrategies } from './store/strategiesStore';
+import { addTrade } from './store/tradesStore';
+import { setRefresh } from './store/propertiesStore';
 import { useAppSelector, useAppDispatch } from './store/hooks'
 import { RootState } from './store/store';
 
@@ -43,37 +46,49 @@ interface synthExchangeAsset {
   id: number
 }
 
-export interface iStrategy {
-  id: number,
-  target: string,
-  condition: string,
-  value: number,
-  action: string,
-  max_exposure: number,
-  max_trade_notional: number,
-  time_delay: number
-  synth_asset_name: string,
-  strategy_name: string
-}
-
-const tradesReceiver = new WebSocket(constants.tradeSock)
-
 function App() {
   const [followedAssets, setFollowedAssets] = useState<exAsset[]>([])
   const [allAssets, setAllAssets] = useState<exAsset[]>([])
   const [synthAssets, setSynthAssets] = useState<synthAsset[]>([])
 
   const dispatch = useAppDispatch()
-
-  tradesReceiver.onmessage = (msg) => {
-    console.log(msg)
-    alert(msg)
-  }
-
-  // tradesReceiver.send("TestMessage")
+  let tradesReceiver: WebSocket
 
   useEffect( () => {
 
+    if (!tradesReceiver) {
+      console.log("Create Trades Receiver")
+      tradesReceiver = new WebSocket(constants.tradeSock)
+
+      tradesReceiver.onmessage = (msg) => {
+        console.log(msg)
+        dispatch(addTrade({
+          strategy_name: "name",
+          asset_name: "A",
+          trade_action: "BUY",
+          exec_price: 0,
+          exec_qty: 0,
+          target_bid: 0,
+          target_ask: 0
+        }))
+        return false;
+      }
+    
+      tradesReceiver.onerror = (e) => {
+        alert(e)
+      }
+    
+      tradesReceiver.onclose = () => {
+        alert("Socket Closed")
+      }
+    
+      tradesReceiver.onopen = (msg) => {
+        tradesReceiver.send("subscribe")
+        alert("Socket Opened")
+      }
+      
+    }
+    
     const dbUrl = constants.dbUrl + "followedAssets/" + constants.userId
     fetch(dbUrl).then(res=>res.json()).then(assets=>
     {
@@ -155,20 +170,24 @@ function App() {
       <allAssetContext.Provider value={allAssets}>
         <synthAssetContext.Provider value = {synthAssets}>
           <div className='side-by-side'>
-            <div className='bordered'>
+            <div className='bordered25'>
+              <label htmlFor="refresh_on_off">Refresh Asset Prices: </label>
+              <input type="checkbox" id="refresh_on_off" value="ON" onChange={(e) => {
+                dispatch(setRefresh(e.target.checked))
+              }}></input>
               <AssetList selectedAssets={followedAssets} assetRemovedCallback={followedAssetRemoved}/>
               <SynthAssetList synthAssets={synthAssets}/>
             </div>
-            <div className='bordered'>
+            <div className='bordered25'>
               <StrategyList/>
             </div>
-            <div className='bordered'>
+            <div className='bordered50'>
               <div>
                 <Link to='/followAsset'><button>Add New Follow</button></Link>
                 <Link to='/createSynth'><button>Create Synth Asset</button></Link>
                 <Link to='/createStrategy'><button>Create Strategy</button></Link>
                 {/* <Link to='/showStrategy'><button>Show Strategy</button></Link> */}
-                {/* <Link to='/'><button>Show Trades</button></Link> */}
+                <Link to='/trades'><button>Show Trades</button></Link>
               </div>
               <Switch>
                 <Route path="/followAsset">
@@ -182,6 +201,9 @@ function App() {
                 </Route>
                 <Route path="/showStrategy/:strategyName">
                   <StrategyDetail></StrategyDetail>
+                </Route>
+                <Route path="/trades">
+                  <Trades></Trades>
                 </Route>
               </Switch>
             </div>
