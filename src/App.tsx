@@ -17,6 +17,7 @@ import { addTrade } from './store/tradesStore';
 import { setRefresh } from './store/propertiesStore';
 import { useAppSelector, useAppDispatch } from './store/hooks'
 import { RootState } from './store/store';
+import { iTrade } from './interfaces/interfaces';
 
 export const allAssetContext = createContext<exAsset[]>([])
 export const synthAssetContext = createContext<synthAsset[]>([])
@@ -61,30 +62,33 @@ function App() {
       tradesReceiver = new WebSocket(constants.tradeSock)
 
       tradesReceiver.onmessage = (msg) => {
-        console.log(msg)
-        dispatch(addTrade({
-          strategy_name: "name",
-          asset_name: "A",
-          trade_action: "BUY",
-          exec_price: 0,
-          exec_qty: 0,
-          target_bid: 0,
-          target_ask: 0
-        }))
+        const obj = JSON.parse(msg.data)
+        const dt = new Date(0)
+        dt.setUTCSeconds(obj.trade_time)
+        const newTrade: iTrade = {
+          trade_time:obj.trade_time,
+          trade_time_display:`${String(dt.getUTCHours()).padStart(2, '0')}:${String(dt.getUTCMinutes()).padStart(2,'0')}:${String(dt.getUTCSeconds()).padStart(2, '0')}`,
+          strategy_name:obj.strategy_name,
+          asset_name:obj.asset_name,
+          trade_action:obj.trade_action,
+          exec_price:obj.exec_price,
+          exec_qty:obj.exec_qty,
+          target_ask:0,
+          target_bid:0
+         }
+        dispatch(addTrade(newTrade))
         return false;
       }
     
       tradesReceiver.onerror = (e) => {
-        alert(e)
       }
     
       tradesReceiver.onclose = () => {
-        alert("Socket Closed")
+        // alert("Socket Closed")
       }
     
       tradesReceiver.onopen = (msg) => {
         tradesReceiver.send("subscribe")
-        alert("Socket Opened")
       }
       
     }
@@ -199,7 +203,7 @@ function App() {
                 <Route path="/createStrategy">
                   <CreateStrategy></CreateStrategy>
                 </Route>
-                <Route path="/showStrategy/:strategyName">
+                <Route path="/showStrategy/:strategyId">
                   <StrategyDetail></StrategyDetail>
                 </Route>
                 <Route path="/trades">

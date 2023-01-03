@@ -18,6 +18,8 @@ export interface iLeg {
 }
 
 export interface iTrade {
+    trade_time: number,
+    trade_time_display: string,
     strategy_name: string,
     asset_name: string,
     trade_action: string,

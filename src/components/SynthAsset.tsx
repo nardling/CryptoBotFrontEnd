@@ -43,8 +43,8 @@ const SynthAsset = (props: any) => {
     return (
         <>
         <h5>{assetKey}</h5>
-        <h5>Bid:{priceInfo["bidSize"]} @ {priceInfo["bestBid"]}</h5>
-        <h5>Ask:{priceInfo["offerSize"]} @ {priceInfo["bestOffer"]}</h5>
+        <h5>Bid:{priceInfo["bidSize"]} @ {parseFloat(priceInfo["bestBid"]).toFixed(3)}</h5>
+        <h5>Ask:{priceInfo["offerSize"]} @ {parseFloat(priceInfo["bestOffer"]).toFixed(3)}</h5>
         <button onClick={removeAsset}>Remove Synth Asset</button>
         </>
     )

@@ -14,7 +14,6 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
         () => {
             const url = constants.mdUrl + "getStrategyState/" + constants.userId + "/" + strategy.strategy_name
             fetch(url).then(res=>res.json()).then(status=>{
-                    console.log("Strategy Status", status)
                     setRegistered(status.isRegistered)
                     if (status.isRegistered)
                         setRunning(status.isRunning)
@@ -32,11 +31,9 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
         const url = constants.mdUrl + "registerStrategy/" + constants.userId + "/" + strategy.synth_asset_name + "/" + 
             strategy.target + "/" + strategy.condition + "/" + strategy.value + "/" + strategy.action + "/" + strategy.max_exposure +
             "/" + strategy.max_trade_notional + "/" + strategy.time_delay + "/" + strategy.strategy_name
-        setRegistered(true)
-        console.log(url)
         fetch(url, {
             method: 'POST'
-        })
+        }).then(r=>setRegistered(true))
     }
 
     const startStrategy = () => {
@@ -75,7 +72,7 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
     }
 
     const selectStrategy = () => {
-        const url=`/showStrategy/${strategy.strategy_name}`
+        const url=`/showStrategy/${strategy.id}`
         history.push(url)
     }
 

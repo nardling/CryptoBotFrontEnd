@@ -3,7 +3,7 @@ import { useAppSelector } from "../store/hooks";
 
 const Trades = () => {
     const trades = useAppSelector(state => state.trades.tradeList)
-
+    console.log(trades)
     return(
         <table>
             <tr>
@@ -14,15 +14,14 @@ const Trades = () => {
                 <th> Price </th>
                 <th> Qty </th>
             </tr>
-            {trades.map(t => 
+            {trades.map(t =>
                 <tr>
                     <td>{t.strategy_name}</td>
-                    <td>{t.trade_action}</td>
+                    <td>{t.trade_time_display}</td>
                     <td>{t.asset_name}</td>
-                    <td>{t.exec_qty}</td>
-                    <td>{t.exec_price}</td>
-                    <td>{t.target_bid}</td>
-                    <td>{t.target_ask}</td>
+                    <td>{t.trade_action}</td>
+                    <td>{t.exec_price.toFixed(3)}</td>
+                    <td>{t.exec_qty.toFixed(6)}</td>
                 </tr>)}
         </table>
     )
