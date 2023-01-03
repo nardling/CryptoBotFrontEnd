@@ -2,13 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import strategiesReducer from './strategiesStore'
 import tradesReducer from './tradesStore'
 import propertiesReducer from './propertiesStore'
+import synthAssetReducer from './synthAssetStore'
 
 export const store = configureStore(
     {
         reducer: {
             strategies: strategiesReducer,
             trades: tradesReducer,
-            properties: propertiesReducer
+            properties: propertiesReducer,
+            synthAssets: synthAssetReducer
         }
     }
 )

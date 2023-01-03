@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useDebugValue, useEffect, useState } from "react"
 import constants from "./constants"
-import { useAppSelector } from '../store/hooks'
+import { useAppSelector, useAppDispatch } from '../store/hooks'
+import { removeSynthAsset } from "../store/synthAssetStore"
 
 const SynthAsset = (props: any) => {
     const [priceInfo, setPriceInfo] = useState<{[key: string]: string}>({})
     const [callCount, setCallCount] = useState<number>(0)
     const [assetRegistered, setAssetRegistered] = useState<boolean>(false)
+    
+    const dispatch = useAppDispatch()
 
     const {assetKey, assetId} = props
     const autoRefresh: boolean = useAppSelector(state => state.properties.settings.refresh_on)
@@ -37,7 +40,7 @@ const SynthAsset = (props: any) => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify(payload)
-        })/*.then( remove from list) */
+        }).then(res=>res.json()).then(data => dispatch(removeSynthAsset(assetId as number)))
     }
 
     return (

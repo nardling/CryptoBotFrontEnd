@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ButtonHTMLAttributes } from "react"
 import constants from "./constants"
 import { allAssetContext } from "../App"
-import { exAsset } from "../App"
+import { exAsset } from "../interfaces/interfaces"
 import AllAssetDropdown from "./AllAssetDropdown"
 
 // id: number,

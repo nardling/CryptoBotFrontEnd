@@ -1,16 +1,15 @@
 import constants from "./constants"
 import React, { useEffect, useState } from "react"
 import AllAssetDropdown from "./AllAssetDropdown"
+import { useAppDispatch } from "../store/hooks"
+import { addSynthAsset } from "../store/synthAssetStore"
+import { synthAsset } from "../interfaces/interfaces"
+import { NewLineKind } from "typescript"
 
 interface leg {
     assetId: number,
     weight: number
 }
-
-// interface savedLeg {
-//     exch_asset_id : number,
-//     weight: number
-// }
 
 const newLeg = {
     assetId: -1,
@@ -19,8 +18,9 @@ const newLeg = {
 
 const CreateSynthAsset = () => {
     const [assetList, setAssetList] = useState<leg[]>([newLeg])
-    const [assetName, setAssetName] = useState<String>("")
-
+    const [assetName, setAssetName] = useState<string>("")
+    const dispatch = useAppDispatch()
+    
     const saveAsset = () => {
         const legs = assetList.map(a => {
             const payload: {} = {
@@ -29,7 +29,7 @@ const CreateSynthAsset = () => {
             }
             return payload
         })
-        const newSynthAsset: {} = {
+        const newDBSynthAsset: {} = {
             "user_id" : constants.userId,
             "descr" : assetName,
             "synth_legs_attributes" : legs
@@ -41,8 +41,16 @@ const CreateSynthAsset = () => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(newSynthAsset)
-        })
+            body: JSON.stringify(newDBSynthAsset)
+        }).then(res=>res.json()).then(
+            newItem => {
+                const newLclSynthAsset: synthAsset = {
+                    id: newItem.id,
+                    descr: assetName
+                }
+                dispatch(addSynthAsset(newLclSynthAsset))
+            }
+        )
     }
 
     const addLeg = () => {

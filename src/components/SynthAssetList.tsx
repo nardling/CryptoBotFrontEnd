@@ -1,12 +1,12 @@
+import { useAppSelector } from "../store/hooks"
 import SynthAsset from "./SynthAsset"
 
-const SynthAssetList = (props:{synthAssets:{
-    id: number,
-    descr: string}[]
-}) => {
+const SynthAssetList = () => {
+    const synthAssets = useAppSelector(state => state.synthAssets.assets)
+
     return (
         <>
-        {props.synthAssets.map(sa => <SynthAsset assetId = {sa.id} assetKey={sa.descr}/>)}
+        {synthAssets.map(sa => <SynthAsset assetId = {sa.id} assetKey={sa.descr}/>)}
         </>
     )
 }

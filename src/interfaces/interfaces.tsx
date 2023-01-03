@@ -32,3 +32,22 @@ export interface iTrade {
 export interface properties {
   refresh_on: boolean
 }
+
+export interface exAsset {
+  id: number
+  symbol: string,
+  descr: string,
+  exchange_name: string
+}
+
+export interface synthAsset {
+  id: number,
+  descr: string
+}
+
+export interface synthLeg {
+  descr: string,
+  weight: number,
+  symbol: string,
+  exchange_name: string
+}

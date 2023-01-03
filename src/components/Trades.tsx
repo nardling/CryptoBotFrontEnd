@@ -3,7 +3,6 @@ import { useAppSelector } from "../store/hooks";
 
 const Trades = () => {
     const trades = useAppSelector(state => state.trades.tradeList)
-    console.log(trades)
     return(
         <table>
             <tr>

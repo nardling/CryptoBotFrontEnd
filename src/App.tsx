@@ -15,31 +15,12 @@ import StrategyList from './components/StrategyList';
 import { setStrategies } from './store/strategiesStore';
 import { addTrade } from './store/tradesStore';
 import { setRefresh } from './store/propertiesStore';
-import { useAppSelector, useAppDispatch } from './store/hooks'
+import { useAppDispatch } from './store/hooks'
 import { RootState } from './store/store';
-import { iTrade } from './interfaces/interfaces';
+import { iTrade, exAsset, synthAsset, synthLeg } from './interfaces/interfaces';
+import { setSynthAssets } from './store/synthAssetStore';
 
 export const allAssetContext = createContext<exAsset[]>([])
-export const synthAssetContext = createContext<synthAsset[]>([])
-
-export interface exAsset {
-  id: number,
-  symbol: string,
-  descr: string,
-  exchange_name: string
-}
-
-interface synthAsset {
-  id: number,
-  descr: string
-}
-
-interface synthLeg {
-  descr: string,
-  weight: number,
-  symbol: string,
-  exchange_name: string
-}
 
 interface synthExchangeAsset {
   symbol: string,
@@ -50,7 +31,6 @@ interface synthExchangeAsset {
 function App() {
   const [followedAssets, setFollowedAssets] = useState<exAsset[]>([])
   const [allAssets, setAllAssets] = useState<exAsset[]>([])
-  const [synthAssets, setSynthAssets] = useState<synthAsset[]>([])
 
   const dispatch = useAppDispatch()
   let tradesReceiver: WebSocket
@@ -84,7 +64,7 @@ function App() {
       }
     
       tradesReceiver.onclose = () => {
-        // alert("Socket Closed")
+        tradesReceiver.send("close")
       }
     
       tradesReceiver.onopen = (msg) => {
@@ -112,8 +92,7 @@ function App() {
       {
         console.log(assets)
         const assetsAsSynth: synthAsset[] = assets as synthAsset[]
-        setSynthAssets(assetsAsSynth)
-        console.log(assetsAsSynth)
+        dispatch(setSynthAssets(assetsAsSynth))
 
         assetsAsSynth.forEach(a => {
           const legsUrl = constants.dbUrl + "syntheticLegs/" + a.id
@@ -172,7 +151,6 @@ function App() {
     <Router>
     <div className="App">
       <allAssetContext.Provider value={allAssets}>
-        <synthAssetContext.Provider value = {synthAssets}>
           <div className='side-by-side'>
             <div className='bordered25'>
               <label htmlFor="refresh_on_off">Refresh Asset Prices: </label>
@@ -180,7 +158,7 @@ function App() {
                 dispatch(setRefresh(e.target.checked))
               }}></input>
               <AssetList selectedAssets={followedAssets} assetRemovedCallback={followedAssetRemoved}/>
-              <SynthAssetList synthAssets={synthAssets}/>
+              <SynthAssetList/>
             </div>
             <div className='bordered25'>
               <StrategyList/>
@@ -212,7 +190,6 @@ function App() {
               </Switch>
             </div>
           </div>
-        </synthAssetContext.Provider>
       </allAssetContext.Provider>
     </div>
     </Router>

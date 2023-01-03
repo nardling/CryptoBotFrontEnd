@@ -7,7 +7,7 @@ import { stringify } from "querystring"
 
 const CreateStrategy = () => {
     const addUrl = constants.dbUrl + "createStrategy"
-    const [target, setTarget] = useState("Bid")
+    const [target, setTarget] = useState(constants.Bid)
     const [condition, setCondition] = useState("LT")
     const [value, setValue] = useState(0)
     const [action, setAction] = useState("Buy")
@@ -59,9 +59,9 @@ const CreateStrategy = () => {
         <br/>
         <label>Target: </label>
         <select onChange={(e) => setTarget(e.target.value)} value={target} >
-            <option>Bid</option>
-            <option>Offer</option>
-            <option>Spread</option>
+            <option>{constants.Bid}</option>
+            <option>{constants.Offer}</option>
+            {/* <option>Spread</option> */}
         </select>
         <label>Condition: </label>
         <select onChange={(e) => setCondition(e.target.value)} value={condition} >
@@ -74,8 +74,8 @@ const CreateStrategy = () => {
         <br/>
         <label>Action: </label>
         <select onChange={(e) => setAction(e.target.value)} value={action}>
-            <option>Buy</option>
-            <option>Sell</option>
+            <option>{constants.Buy}</option>
+            <option>{constants.Sell}</option>
         </select>
         <br/>
         <br/>
