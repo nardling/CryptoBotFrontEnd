@@ -40,7 +40,9 @@ const SynthAsset = (props: any) => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify(payload)
-        }).then(res=>res.json()).then(data => dispatch(removeSynthAsset(assetId as number)))
+        }).then(res=>res.json()).then(data => {
+            dispatch(removeSynthAsset(assetId as number))
+        })
     }
 
     return (

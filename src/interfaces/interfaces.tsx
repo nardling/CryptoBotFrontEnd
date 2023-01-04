@@ -10,7 +10,8 @@ export interface iStrategy {
     synth_asset_name: string,
     strategy_name: string,
     synthetic_asset_id: number,
-    user_id: number
+    user_id: number,
+    active?: boolean
   }
 
 export interface iLeg {
@@ -43,6 +44,7 @@ export interface exAsset {
 export interface synthAsset {
   id: number,
   descr: string
+  legs?: synthLeg[]
 }
 
 export interface synthLeg {

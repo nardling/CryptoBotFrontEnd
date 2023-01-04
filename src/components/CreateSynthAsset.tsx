@@ -4,7 +4,6 @@ import AllAssetDropdown from "./AllAssetDropdown"
 import { useAppDispatch } from "../store/hooks"
 import { addSynthAsset } from "../store/synthAssetStore"
 import { synthAsset } from "../interfaces/interfaces"
-import { NewLineKind } from "typescript"
 
 interface leg {
     assetId: number,

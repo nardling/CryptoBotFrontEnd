@@ -20,9 +20,38 @@ code {
 .bordered25 {
   border-style: solid;
   width: 25%;
+  height: 80vh;
 }
 
 .bordered50 {
   border-style: solid;
   width: 50%;
+  overflow-y: scroll;
+  height: 80vh;
+}
+
+.tradesTable {
+  font-size: 12px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.buyRow {
+  background-color: lightpink;
+}
+
+.sellRow {
+  background-color: lightgreen;
+}
+
+.activeStrat {
+  background-color: lightgreen;
+}
+
+.inactiveStrat {
+  background-color: white;
+}
+
+.assetTile {
+  line-height: 0pt;
 }

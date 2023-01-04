@@ -43,12 +43,12 @@ const Asset = (props: any) => {
     }
 
     return (
-        <>
-        <h5>{exchName}:{symbol}</h5>
-        <h5>Bid:{priceInfo["bidSize"]} @ {parseFloat(priceInfo["bestBid"]).toFixed(3)}</h5>
-        <h5>Ask:{priceInfo["offerSize"]} @ {parseFloat(priceInfo["bestOffer"]).toFixed(3)}</h5>
-        <button onClick={removeAsset}>Remove</button>
-        </>
+        <div className="assetTile">
+            <h5>{exchName}:{symbol}</h5>
+            <h6>Bid:{priceInfo["bidSize"]} @ {parseFloat(priceInfo["bestBid"]).toFixed(3)}</h6>
+            <h6>Ask:{priceInfo["offerSize"]} @ {parseFloat(priceInfo["bestOffer"]).toFixed(3)}</h6>
+            <button onClick={removeAsset}>Remove</button>
+        </div>
     )
 }
 

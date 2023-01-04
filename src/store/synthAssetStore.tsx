@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { synthAsset } from "../interfaces/interfaces";
+import { synthAsset, synthLeg } from "../interfaces/interfaces";
 
 export const synthAssetSlice = createSlice(
     {
@@ -16,10 +16,17 @@ export const synthAssetSlice = createSlice(
             },
             removeSynthAsset: (state, action: PayloadAction<number>) => {
                 state.assets = state.assets.filter(a => a.id != action.payload)
+            },
+            setSynthLegs: (state, action: PayloadAction<{id: number, legs: synthLeg[]}>) => {
+                state.assets.forEach(a => {
+                    if (a.id == action.payload.id) {
+                        a.legs = [...action.payload.legs]
+                    }
+                });
             }
         }
     }
 )
 
-export const { addSynthAsset, setSynthAssets, removeSynthAsset } = synthAssetSlice.actions
+export const { addSynthAsset, setSynthAssets, removeSynthAsset, setSynthLegs } = synthAssetSlice.actions
 export default synthAssetSlice.reducer

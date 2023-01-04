@@ -4,21 +4,26 @@ import constants from "./constants"
 import SynthAssetDropdown from "./SynthAssetDropdown"
 import { iStrategy } from "../interfaces/interfaces"
 import { stringify } from "querystring"
+import strategiesStore, { addStrategy, strategySlice } from "../store/strategiesStore"
+import { useAppDispatch } from "../store/hooks"
 
 const CreateStrategy = () => {
     const addUrl = constants.dbUrl + "createStrategy"
     const [target, setTarget] = useState(constants.Bid)
     const [condition, setCondition] = useState("LT")
     const [value, setValue] = useState(0)
-    const [action, setAction] = useState("Buy")
+    const [action, setAction] = useState(constants.Buy)
     const [maxExposure, setMaxExposure] = useState(0.5)
     const [maxTradeNotional, setMaxTradeNotional] = useState(0.1)
     const [timeDelay, setTimeDelay] = useState(1)
     const [assetId, setAssetId] = useState(-1)
+    const [assetName, setAssetName] = useState("")
     const [name, setName] = useState("")
 
+    const dispatch = useAppDispatch()
+
     const addStrategy = () => {
-        const newStrategy: iStrategy = {
+        let newStrategy: iStrategy = {
             "synthetic_asset_id": assetId,
             "user_id": constants.userId,
             "target": target,
@@ -40,11 +45,18 @@ const CreateStrategy = () => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify(newStrategy)
-        })
+        }).then(res=>res.json()).then(
+            newItem => {
+                newStrategy.id = newItem.id
+                newStrategy.synth_asset_name = assetName
+                dispatch(strategySlice.actions.addStrategy(newStrategy))
+            }
+        )
     }
 
     const assetChanged = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
         setAssetId(parseInt(e.target.value))
+        setAssetName(e.target.selectedOptions[0].label)
     }
 
     return (

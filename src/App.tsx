@@ -18,7 +18,7 @@ import { setRefresh } from './store/propertiesStore';
 import { useAppDispatch } from './store/hooks'
 import { RootState } from './store/store';
 import { iTrade, exAsset, synthAsset, synthLeg } from './interfaces/interfaces';
-import { setSynthAssets } from './store/synthAssetStore';
+import { setSynthAssets, setSynthLegs } from './store/synthAssetStore';
 
 export const allAssetContext = createContext<exAsset[]>([])
 
@@ -38,7 +38,6 @@ function App() {
   useEffect( () => {
 
     if (!tradesReceiver) {
-      console.log("Create Trades Receiver")
       tradesReceiver = new WebSocket(constants.tradeSock)
 
       tradesReceiver.onmessage = (msg) => {
@@ -90,7 +89,6 @@ function App() {
     const synthAssetsUrl = constants.dbUrl + "syntheticAssets/" + constants.userId
     fetch(synthAssetsUrl).then(res => res.json()).then(assets =>
       {
-        console.log(assets)
         const assetsAsSynth: synthAsset[] = assets as synthAsset[]
         dispatch(setSynthAssets(assetsAsSynth))
 
@@ -98,6 +96,7 @@ function App() {
           const legsUrl = constants.dbUrl + "syntheticLegs/" + a.id
           fetch(legsUrl).then(res=>res.json()).then(legs=>{
             const legsAsSynth: synthLeg[] = legs
+            dispatch(setSynthLegs({id: a.id, legs: legs}))
             const regSynthAssetUrl = `${constants.mdUrl}registerSynthAsset/${constants.userId}/${a.descr}`
             fetch(regSynthAssetUrl,
               {
@@ -153,7 +152,7 @@ function App() {
       <allAssetContext.Provider value={allAssets}>
           <div className='side-by-side'>
             <div className='bordered25'>
-              <label htmlFor="refresh_on_off">Refresh Asset Prices: </label>
+              <label htmlFor="refresh_on_off">Auto-Refresh Asset Prices: </label>
               <input type="checkbox" id="refresh_on_off" value="ON" onChange={(e) => {
                 dispatch(setRefresh(e.target.checked))
               }}></input>

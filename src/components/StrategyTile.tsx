@@ -2,6 +2,8 @@ import { iStrategy } from "../interfaces/interfaces";
 import constants from './constants'
 import { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { useAppDispatch } from "../store/hooks";
+import { setActive, removeStrategy, strategySlice } from "../store/strategiesStore";
 
 const StrategyTile = (props: {strategy: iStrategy}) => {
 
@@ -9,6 +11,7 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
     const [running, setRunning] = useState(false)
     const strategy = props.strategy
     const history = useHistory()
+    const dispatch = useAppDispatch()
 
     useEffect (
         () => {
@@ -72,17 +75,39 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
     }
 
     const selectStrategy = () => {
+        dispatch(setActive(strategy.id))
         const url=`/showStrategy/${strategy.id}`
         history.push(url)
     }
 
-    // <button onClick={registerStrategy}>UnRegister</button>
+    const removeStrategy = () => {
+        stopStrategy()
+        const dbUrl = constants.dbUrl + "removeStrategy"
+        const payload = {
+            "strategyId" : strategy.id
+        }
+        fetch(dbUrl, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }
+        )
+        dispatch(strategySlice.actions.removeStrategy(strategy.id))
+        const url="/";
+        history.push(url)
+    }
 
     return (
-        <div onClick={selectStrategy}>
+        <div className={strategy.active ? "activeStrat" : "inactiveStrat"}>
             <h5>{strategy.strategy_name}</h5>
             {registered ? <></> : <button onClick={registerStrategy}>Register</button>}
             {displayStartStop()}
+            <button onClick={removeStrategy}>Remove</button>
+            <button onClick={selectStrategy}>Show</button>
         </div>
     )
 }
