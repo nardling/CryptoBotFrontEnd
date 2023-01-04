@@ -101,7 +101,7 @@ const CreateStrategy = () => {
         <input type="number" onChange={(e) => {setTimeDelay(parseFloat(e.target.value))}} value={timeDelay}/>
         <br/>
         <br/>
-        <button onClick={addStrategy}>Save</button>
+        <button className='controlButton' onClick={addStrategy}>Save</button>
         </>
     )
 }

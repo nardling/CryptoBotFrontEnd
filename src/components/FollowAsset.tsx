@@ -45,7 +45,7 @@ const FollowAsset = (props: any) => {
             {value => 
             <form>
                 <AllAssetDropdown callback={updateSelectedAsset} index={0} selectedAsset={selectedAsset}></AllAssetDropdown>
-                <button onClick={(e) => {submitFollow(value, e)}}>Follow Asset</button>
+                <button className='controlButton' onClick={(e) => {submitFollow(value, e)}}>Follow Asset</button>
             </form> }
         </allAssetContext.Consumer>
     )

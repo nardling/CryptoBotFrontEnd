@@ -163,12 +163,11 @@ function App() {
               <StrategyList/>
             </div>
             <div className='bordered50'>
-              <div>
-                <Link to='/followAsset'><button>Add New Follow</button></Link>
-                <Link to='/createSynth'><button>Create Synth Asset</button></Link>
-                <Link to='/createStrategy'><button>Create Strategy</button></Link>
-                {/* <Link to='/showStrategy'><button>Show Strategy</button></Link> */}
-                <Link to='/trades'><button>Show Trades</button></Link>
+              <div className="controlButtonBar">
+                <Link to='/followAsset'><button className='controlButton'>Add New Follow</button></Link>
+                <Link to='/createSynth'><button className='controlButton'>Create Synth Asset</button></Link>
+                <Link to='/createStrategy'><button className='controlButton'>Create Strategy</button></Link>
+                <Link to='/trades'><button className='controlButton'>Show Trades</button></Link>
               </div>
               <Switch>
                 <Route path="/followAsset">

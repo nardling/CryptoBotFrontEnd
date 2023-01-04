@@ -55,3 +55,16 @@ code {
 .assetTile {
   line-height: 0pt;
 }
+
+.controlButtonBar {
+  margin-bottom: 20px;
+  margin-top: 10px;
+  background-color: lightgrey;
+}
+
+.controlButton {
+  margin-right: 10px;
+  background-color: gray;
+  border-radius: 10px;
+  color: lightgray;
+}

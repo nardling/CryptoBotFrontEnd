@@ -103,7 +103,7 @@ const CreateSynthAsset = () => {
                 </tr>
             )}
             </table>
-            <button onClick={saveAsset}>Save</button>
+            <button className='controlButton' onClick={saveAsset}>Save</button>
         </>
     )
 }

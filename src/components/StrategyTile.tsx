@@ -104,10 +104,10 @@ const StrategyTile = (props: {strategy: iStrategy}) => {
     return (
         <div className={strategy.active ? "activeStrat" : "inactiveStrat"}>
             <h5>{strategy.strategy_name}</h5>
-            {registered ? <></> : <button onClick={registerStrategy}>Register</button>}
+            {registered ? <></> : <button className='controlButton' onClick={registerStrategy}>Register</button>}
             {displayStartStop()}
-            <button onClick={removeStrategy}>Remove</button>
-            <button onClick={selectStrategy}>Show</button>
+            <button className='controlButton' onClick={removeStrategy}>Remove</button>
+            <button className='controlButton' onClick={selectStrategy}>Show</button>
         </div>
     )
 }

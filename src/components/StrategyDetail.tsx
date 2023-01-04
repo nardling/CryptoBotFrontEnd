@@ -65,7 +65,7 @@ const StrategyDetail = () => {
         <label>{`${thisStrategy.action} when ${thisStrategy.target} is ${thisStrategy.condition}  `}</label>
         <input type="number" onChange={(e)=>{setValue(parseFloat(e.target.value))}} value={value}></input>
         <br/><br/>
-        <button onClick={sendModify}>Modify Threshold</button>
+        <button className='controlButton' onClick={sendModify}>Modify Threshold</button>
         <br/><br/>
         <TradesTable trades={trades.filter(t=>t.strategy_name==thisStrategy.strategy_name)}></TradesTable>
         </>

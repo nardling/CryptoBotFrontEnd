@@ -47,7 +47,7 @@ const Asset = (props: any) => {
             <h5>{exchName}:{symbol}</h5>
             <h6>Bid:{priceInfo["bidSize"]} @ {parseFloat(priceInfo["bestBid"]).toFixed(3)}</h6>
             <h6>Ask:{priceInfo["offerSize"]} @ {parseFloat(priceInfo["bestOffer"]).toFixed(3)}</h6>
-            <button onClick={removeAsset}>Remove</button>
+            <button className='controlButton' onClick={removeAsset}>Remove</button>
         </div>
     )
 }
