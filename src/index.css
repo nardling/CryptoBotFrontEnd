@@ -64,6 +64,7 @@ code {
 
 .controlButton {
   margin-right: 10px;
+  margin-left: 10px;
   background-color: gray;
   border-radius: 10px;
   color: lightgray;
